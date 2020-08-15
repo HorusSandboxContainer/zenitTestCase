@@ -1,37 +1,30 @@
 package controller;
 
-import dao.Storage;
-import model.ResultDTO;
+import config.PropertiesConfig;
+import model.AdvancedString;
 import model.StringWithLength;
+import service.ScannerService;
+import service.StorageService;
 
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.StringTokenizer;
-
+/**
+ * Main controller
+ * Invoke chain:
+ * 1) Create services
+ * 2) Load properties
+ * 3) Take temporary transfer data by ScannerService
+ * 4) Take result with StorageService
+ */
 public class Application {
     public static void main(String[] args) {
-        Storage<StringWithLength> storage = new Storage<>();
+        ScannerService scannerService = new ScannerService(System.in);
+        StorageService<AdvancedString> storageService = new StorageService<>();
 
-        Scanner scanner = new Scanner(System.in);
+        PropertiesConfig.loadProperties("config/application.properties");
 
-        String firstInput = scanner.nextLine();
-        String secondInput = scanner.nextLine();
+        String[] scannedStrings = scannerService.scanStringsFromStream(Integer.parseInt(PropertiesConfig.getProperty("readCount")));
 
-        StringTokenizer tokenizer = new StringTokenizer(firstInput, " ");
-        while (tokenizer.hasMoreTokens()) {
-            storage.put(new StringWithLength(tokenizer.nextToken()));
-        }
-
-        tokenizer = new StringTokenizer(secondInput, " ");
-        while (tokenizer.hasMoreTokens()) {
-            Optional<ResultDTO> byKey = Optional.empty();
-            try {
-                byKey = storage.getDTOByKey(Integer.parseInt(tokenizer.nextToken()));
-            } catch (IllegalArgumentException illegalArgumentException) {
-                System.out.println("Second string has bad format (u can use only digits)");
-            }
-            byKey.ifPresent(System.out::println);
-        }
+        storageService.storeData(scannerService.prepareDataToStore(scannedStrings[0], StringWithLength.class));
+        storageService.printDataByPositions(scannerService.getPositionsFromString(scannedStrings[1]));
 
     }
 }

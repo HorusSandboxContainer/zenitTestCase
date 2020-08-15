@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 public class StringWithLength extends AdvancedString {
 
     private final int length;
@@ -11,11 +9,13 @@ public class StringWithLength extends AdvancedString {
         this.length = value.length();
     }
 
+    @Override
     public String getValue() {
         return value;
     }
 
-    public int getLength() {
+    @Override
+    public Object getAdvancedField() {
         return length;
     }
 
@@ -25,10 +25,5 @@ public class StringWithLength extends AdvancedString {
         if (o == null || getClass() != o.getClass()) return false;
         StringWithLength that = (StringWithLength) o;
         return length == that.length;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(length);
     }
 }
