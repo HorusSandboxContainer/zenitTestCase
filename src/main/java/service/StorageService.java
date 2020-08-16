@@ -13,7 +13,11 @@ import java.util.Optional;
  * @param <V> - type of AdvancedString children
  */
 public class StorageService<V extends AdvancedString> {
-    private final Storage<V> storage = new Storage<>();
+    private final Storage<V> storage;
+
+    public StorageService(Storage<V> storage) {
+        this.storage = storage;
+    }
 
     public void storeData(V[] data) {
         for (V datum : data) {

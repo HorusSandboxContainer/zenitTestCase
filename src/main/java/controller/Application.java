@@ -1,10 +1,13 @@
 package controller;
 
 import config.PropertiesConfig;
+import dao.Storage;
 import model.AdvancedString;
 import model.StringWithLength;
 import service.ScannerService;
 import service.StorageService;
+
+import java.util.Scanner;
 
 /**
  * Main controller
@@ -16,8 +19,8 @@ import service.StorageService;
  */
 public class Application {
     public static void main(String[] args) {
-        ScannerService scannerService = new ScannerService(System.in);
-        StorageService<AdvancedString> storageService = new StorageService<>();
+        ScannerService scannerService = new ScannerService(new Scanner(System.in));
+        StorageService<AdvancedString> storageService = new StorageService<>(new Storage<>());
 
         PropertiesConfig.loadProperties("config/application.properties");
 

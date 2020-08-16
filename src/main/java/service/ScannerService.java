@@ -3,8 +3,8 @@ package service;
 import config.PropertiesConfig;
 import model.AdvancedString;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -17,16 +17,18 @@ public class ScannerService {
 
     private final Scanner scanner;
 
-
-    public ScannerService(InputStream inputStream) {
-        scanner = new Scanner(inputStream);
+    public ScannerService(Scanner scanner) {
+        this.scanner = scanner;
     }
+
 
     /**
      * @param countOfStringMustBeRead - how much string must be read from InputStream
      * @return String[] - array of scanned strings
+     * @throws NoSuchElementException - throw with exception when countOfStringMustBeRead more then
+     *                                real count of string in input stream
      */
-    public String[] scanStringsFromStream(int countOfStringMustBeRead) {
+    public String[] scanStringsFromStream(int countOfStringMustBeRead) throws NoSuchElementException {
         String[] buffer = new String[countOfStringMustBeRead];
         for (int i = 0; i < countOfStringMustBeRead; i++) {
             buffer[i] = scanner.nextLine();

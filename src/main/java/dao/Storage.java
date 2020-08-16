@@ -20,7 +20,7 @@ public class Storage<V extends AdvancedString> extends HashMap<Integer, V> {
 
     public Optional<ResultDTO<V>> getDTOByKey(Integer key) {
         Optional<ResultDTO<V>> resultDTO = Optional.empty();
-        for (Entry<Integer, V> entry : super.entrySet()) {
+        for (Entry<Integer, V> entry : entrySet()) {
             if (entry.getKey().equals(key)) {
                 resultDTO = Optional.of(new ResultDTO<>(key, entry.getValue()));
                 return resultDTO;
